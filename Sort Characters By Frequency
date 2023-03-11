@@ -1,0 +1,90 @@
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+
+Return the sorted string. If there are multiple answers, return any of them.
+
+https://leetcode.com/problems/sort-characters-by-frequency/description/
+Example 1:
+
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+
+Example 2:
+
+Input: s = "cccaaa"
+Output: "aaaccc"
+Explanation: Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
+Note that "cacaca" is incorrect, as the same characters must be together.
+
+Solution:
+
+class Solution {
+    public String frequencySort(String s) {
+        
+        HashMap<Character, Integer> hm = new HashMap<>();
+
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(hm.containsKey(ch) == true){
+                int of = hm.get(ch);
+                int nf = of+1;
+                hm.put(ch, nf);
+            }else{
+                hm.put(ch, 1);
+            }
+        }
+    Pair[] pr = new Pair[hm.size()];
+    int k =0;
+    for(Map.Entry<Character,Integer> ch : hm.entrySet()){
+      pr[k] = new Pair(ch.getKey(), ch.getValue());
+      k++;
+    }
+    Arrays.sort(pr,(a,b) -> b.count - a.count);
+
+    StringBuilder sb = new StringBuilder();
+    for(int i = 0; i < pr.length; i++){
+         for(int j = 0; j < pr[i].count; j++){
+             sb.append(pr[i].ch);
+         }
+    }
+
+    return sb.toString();
+
+
+    }
+
+}
+
+class Pair{
+
+    Character ch;
+    Integer count;
+
+    public Pair(Character ch,Integer count){
+        this.ch = ch;
+        this.count = count;
+    }
+}
+'
+
+
+
+
+Alernative solution 
+ map convert into list and then sort in decreasing order
+
+       List<Map.Entry<Character, Integer> > listmap
+            = new ArrayList<Map.Entry<Character, Integer> >(
+                hm.entrySet());
+   StringBuilder sb = new StringBuilder();
+        Collections.sort(listmap, (a,b)-> b.getValue().compareTo(a.getValue()));
+
+          for(Map.Entry<Character, Integer> e : listmap){
+            int i = e.getValue();
+            while(i > 0){
+                sb.append(e.getKey());
+                i--;
+            }
+        }
+
